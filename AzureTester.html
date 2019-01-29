@@ -1,0 +1,647 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Azure Connection Tester</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <script type="text/javascript" src="sharedscript.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            background: url('logo.png');
+            background-repeat: no-repeat;
+            background-position: 2% 2%;
+            background-size: auto auto;
+        }
+
+        .header {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .footer {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .leftsection {
+            grid-area: left;
+            min-width: 20px;
+        }
+
+        .mainsection {
+            grid-area: main;
+            min-width: 400px;
+        }
+
+        .rightsection {
+            grid-area: right;
+            min-width: 20px;
+        }
+
+        .bottomsection {
+            grid-area: bottom;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-areas: 'left main main main main main main right' 'bottom bottom bottom bottom bottom bottom bottom bottom';
+            grid-gap: 10px;
+            padding: 10px;
+        }
+
+            .grid-container > div {
+                border: dotted;
+            }
+
+        /* Responsive layout collapse left/right section for narrow screen */
+        @media screen and (max-width: 1200px) {
+            .leftsection {
+                display: none;
+            }
+
+            .rightsection {
+                display: none;
+            }
+        }
+
+        /*update background for small screens*/
+        @media screen and (max-width: 800px) {
+            body {
+                background-image: url('logotransp.png');
+            }
+        }
+
+        #textcontent {
+            max-width: 1200px;
+            min-width: 600px;
+            padding-left: 10px
+        }
+
+        #controlgrid {
+            display: grid;
+            grid-template-columns: 3fr 1fr 3fr 3fr 3fr;
+            grid-auto-rows: 50px;
+            max-width: 600px;
+            min-width: 600px;
+            padding-left: 10px
+        }
+
+            #controlgrid > div { /*style for direct child div elements */
+                background: #FEFEFE;
+                /*padding: 1em;*/
+            }
+
+                #controlgrid > div:nth-child(odd) { /*every odd div will be darker */
+                    background: #F3F3F3;
+                    /*padding: 1em;*/
+                }
+
+        .blueButton {
+            height: 30px;
+            width: 120px;
+            border-style: none;
+            border-radius: 8px;
+            background-color: #4488DD;
+            color: white;
+        }
+
+            .blueButton:hover {
+                background-color: #5599FF;
+            }
+
+            .blueButton:active {
+                background-color: #77BBFF;
+            }
+
+        .blueButtonSimulator a {
+            border-style: none;
+            border-radius: 8px;
+            background-color: #4488DD;
+            color: white;
+            height: 20px;
+            width: 120px;
+            display: block;
+            text-decoration: none;
+            text-align: center;
+            padding: 5px 0px 5px 0px;
+        }
+
+            .blueButtonSimulator a:hover {
+                background-color: #5599FF;
+            }
+
+            .blueButtonSimulator a:active {
+                background-color: #77BBFF;
+            }
+
+        .buttonsimcontainer {
+            padding: 10px 5px 0 10px;
+            /*padding-bottom: 10px;*/
+            justify-content: flex-start;
+        }
+
+        .buttoncontainer, .selectcontainer, .statuscontainer {
+            padding: 10px;
+            padding-bottom: 10px;
+            justify-content: flex-start;
+        }
+
+        #statusdisplay {
+            font-weight: bold;
+            /*color: blue;*/
+        }
+
+        .radiogroupcontainer {
+            justify-content: flex-start;
+        }
+
+        /* The radio button container */
+        .radiocontainer {
+            display: inline-block;
+            position: relative;
+            padding-left: 30px;
+            padding-right: 30px;
+            /*margin-bottom: 12px;*/
+            cursor: pointer;
+            font-size: 14px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            top: 10px;
+            left: 10px;
+            /*padding: 10px;*/
+            /*padding: 10px;*/
+            justify-content: flex-start;
+        }
+
+            /* Hide the browser's default radio button */
+            .radiocontainer input {
+                position: absolute;
+                opacity: 0;
+                cursor: pointer;
+            }
+
+        /* Create a custom radio button */
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 25px;
+            width: 25px;
+            background-color: #AFD0FF; /*//#999999;*/
+            border-radius: 50%;
+        }
+
+        /* On mouse-over, add a lighter grey background color */
+        .radiocontainer:hover input ~ .checkmark {
+            background-color: #88BBFF; /*#AAAAAA;*/
+        }
+
+        /* When the radio button is checked, add a blue background */
+        .radiocontainer input:checked ~ .checkmark {
+            background-color: #4488DD;
+        }
+
+        /* Create the indicator (the dot/circle - hidden when not checked) */
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        /* Show the indicator (dot/circle) when checked */
+        .radiocontainer input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        /* Style the indicator (dot/circle) */
+        .radiocontainer .checkmark:after {
+            top: 9px;
+            left: 9px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: yellow;
+        }
+
+        a {
+            color: #66AAFF;
+        }
+
+            a:hover {
+                color: #dddddd;
+            }
+
+        .subheading {
+            font-size: larger;
+            font-weight: bold;
+        }
+
+        .sectionheading {
+            font-size: larger;
+            color: purple;
+        }
+
+        #responsegrid {
+            display: grid;
+            grid-template-columns: 150px 800px;
+            /*max-width:1600px;*/
+            min-width: 800px;
+            padding-left: 10px;
+            padding-top: 10px;
+            grid-column-gap: 1em;
+        }
+            #responsegrid > div {
+                padding-bottom: 5px;
+            }
+            #responsegrid * {
+                border-color: rgba(100,100,100,0.2);
+            }
+            #responsegrid textarea {
+                min-width: 800px;
+                max-width: 1200px;
+            }
+
+        #errormsg {
+            color: red;
+        }
+
+    </style>
+</head>
+<body onLoad="JavaScript:setOnRefresh();">
+    <header class="header">
+        <h1>Azure Cloud Connection Tester</h1>
+        <p>Testing the multiplication-circle Azure functions and services for connection and response.</p>
+    </header>
+
+    <div class="grid-container">
+        <div class="leftsection"></div>
+        <div class="mainsection">
+            <p id="errormsg"></p>
+            <section id="textcontent">
+                <span>
+                    Azure sends us all info required to draw the multiplication circle.
+                    It could be done in client-side JavaScript alone, so this is simply for demo only, of three alternative technologies:
+                    <ul>
+                        <li>Azure functions built in JavaScript running on a serverless architecture in Node.js</li>
+                        <li>Azure functions built in C# running on a serverless architecture in the .NET framework.</li>
+                        <li>A WCF service built in C# hosted on an IIS App Service communicating through SOAP.</li>
+                    </ul>
+                </span>
+                <span>
+                    CORS settings have been added on Azure server-side for this Github Pages domain name to allow the browser requests to succeed (see Github repository readme for details).
+                </span><br /><br />
+                <span class="subheading">Settings:</span>
+            </section>
+
+            <div id="controlgrid">
+                <div>
+                    <p class="sectionheading">RPC Method:</p>
+                </div>
+                <div></div>
+                <div class="radiogroupcontainer">
+                    <label class="radiocontainer">
+                        Azure JS Fn.
+                        <input type="radio" id="js" checked="checked" name="rpctype">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div class="radiogroupcontainer">
+                    <label class="radiocontainer">
+                        Azure C# Fn.
+                        <input type="radio" id="cs" name="rpctype">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div class="radiogroupcontainer">
+                    <label class="radiocontainer">
+                        WCF Svc.
+                        <input type="radio" id="ws" name="rpctype">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <p class="sectionheading">Function Params:</p>
+                </div>
+                <div></div>
+                <div class="selectcontainer">Multiple: <select class="select" required id="ddlMultiple"></select></div>
+                <div class="selectcontainer">Modulus: <select class="select" required id="ddlModulus"></select></div>
+                <div class="selectcontainer">Radius: <select class="select" required id="ddlRadius"></select></div>
+                <div>
+                    <p class="sectionheading">Function Name:</p>
+                </div>
+                <div></div>
+                <div class="radiogroupcontainer">
+                    <label class="radiocontainer">
+                        createCoords.
+                        <input type="radio" id="createCoords" checked="checked" name="methodname">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div class="radiogroupcontainer">
+                    <label class="radiocontainer">
+                        createMatrix.
+                        <input type="radio" id="createMatrix" name="methodname">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div></div>
+
+                <div class="buttoncontainer">
+                    <input type="button" id="testBut" class="blueButton" value="Test Connection" onclick="testConnection()" />
+                </div>
+                <div>
+                </div>
+                <div class="statuscontainer"> <output class="respDisplay" id="statusdisplay"></output></div>
+                <div class="buttoncontainer">
+                    <input type="button" id="resetBut" class="blueButton" value="Reset" onclick="resetPage()" />
+                </div>
+                <div class="buttoncontainer">
+                    <input type="button" class="blueButton" value="Close" onclick="goBackOrClose()" />
+                </div>
+            </div>
+
+            <div id="responsegrid">
+                <div><label class="subheading">Summary:</label></div><div><textarea class="respDisplay" id="txtsummary" rows="1" readonly="readonly"></textarea></div>
+                <div><label class="subheading">HTTP Method:</label></div><div><textarea class="respDisplay" id="txtHttpMethod" rows="1" readonly="readonly"></textarea></div>
+                <div><label class="subheading">Request URL:</label></div><div><textarea class="respDisplay" id="txturl" rows="2" readonly="readonly"></textarea></div>
+                <div><label class="subheading">Request Body:</label></div><div><textarea class="respDisplay" id="txtbody" rows="3" readonly="readonly"></textarea></div>
+                <div><label class="subheading">Response:</label></div><div><textarea class="respDisplay" id="txtresponse" rows="6" readonly="readonly"></textarea></div>
+                <!--<div><label class="subheading">Resp. Text/XML:</label></div><div><textarea class="respDisplay" id="txtrespcontent" rows="5" readonly="readonly"></textarea></div>-->
+            </div>
+
+        </div>
+        <div class="rightsection"></div>
+        <div class="bottomsection"><footer class="footer">
+            <p>&#169;<small>Copyright 2019 Sajeewa Dissanayake</small></p></footer></div>
+    </div>
+
+    <script>
+        //set DOM references for HTML elements
+        var errormsg = document.getElementById("errormsg");
+        var multipleDDL = document.getElementById("ddlMultiple");
+        var modulusDDL = document.getElementById("ddlModulus");
+        var radiusDDL = document.getElementById("ddlRadius");
+
+        var output1 = document.getElementById("multiplierOut");
+        var output2 = document.getElementById("moduloOut");
+        var output3 = document.getElementById("radiusOut");
+
+        var radiojs = document.getElementById("js");
+        var radiocs = document.getElementById("cs");
+        var radiows = document.getElementById("ws");
+        var radiocoords = document.getElementById("createCoords") 
+        var radiomatrix = document.getElementById("createMatrix") 
+
+        //var anchor = document.getElementById("linkClose");
+
+        var outstatus = document.getElementById("statusdisplay");
+        var summarytxt = document.getElementById("txtsummary");
+        var httpmethodtxt = document.getElementById("txtHttpMethod");
+        var urltxt = document.getElementById("txturl");
+        var bodytxt = document.getElementById("txtbody");
+        var responsetxt = document.getElementById("txtresponse");
+        //var respcontenttxt = document.getElementById("txtrespcontent");
+
+
+        //define global variables and initial values
+        //const centreX = 275;
+        //const centreY = 275;
+        //var querystringObj; //a JSON object to hold query string data from referrer. TODO maybe make this local.
+        //var startTime //global function call start time
+
+
+        //call functions to populate dropdowns (only req'd on initial loading)
+        populateMultiple();
+        populateModulus();
+        populateRadius();
+
+
+        //#region resetPage
+
+        //reset controls on page refresh
+        function setOnRefresh() {
+
+            resetControlsToStart(); // set these to default values in any case (there may be no referring query string).
+
+            //obtain data from querystring
+            var querystringObj = parseQueryString();
+
+            //if no query string exists then don't do anything more.
+            if (querystringObj != "") {
+                 //populate controls using query string params
+                var loadingErrorMsg = populateControls(querystringObj);
+
+                //if we have an error message returned when loading from query string, display it.
+                if (loadingErrorMsg != "") {
+                    errormsg.innerText = loadingErrorMsg;
+                    errormsg.style.display = "inline";
+                }
+            }
+        }
+
+        function resetPage() {
+            //reset all response controls to blank.
+            resetResponse();
+        }
+
+        function resetControlsToStart() {
+            multipleDDL.value = 1;
+            modulusDDL.value = 200;
+            radiusDDL.value = 250;
+            radiojs.checked = true;
+            radiocoords.checked = true;
+            errormsg.innerText = "";
+            errormsg.style.display = "none";
+        }
+
+        function resetResponse() {
+            //reset all response controls to blank. 
+            var els = document.getElementsByClassName("respDisplay");
+            [].forEach.call(els, function (el) { el.innerText = ""; });
+        }
+
+        function goBackOrClose() {
+            // if we didn't navigate to this page, we need some feedback - so show a close page instead.
+            pathArray = document.referrer.split('/');
+            protocol = pathArray[0];
+            host = pathArray[2];
+            url_before = protocol + '//' + host;
+            url_now = window.location.protocol + "//" + window.location.host;
+
+            if (url_before == url_now) {
+                window.history.back(-1);
+            } else {
+                window.location = "closepage.html";
+            };
+        }
+        //#endregion
+
+        //#region populatePage
+
+        function populateMultiple() {
+            for (var i = 1; i <= 100; i++) {
+                var option = document.createElement("OPTION");
+                multipleDDL.options.add(option);
+                option.text = i;
+                option.value = i;
+            }
+        }
+
+        function populateModulus() {
+            for (var i = 1; i <= 200; i++) {
+                var option = document.createElement("OPTION");
+                modulusDDL.options.add(option);
+                option.text = i;
+                option.value = i;
+            }
+        }
+
+        function populateRadius() {
+            for (var i = 100; i <= 250; i++) {
+                var option = document.createElement("OPTION");
+                radiusDDL.options.add(option);
+                option.text = i;
+                option.value = i;
+            }
+        }
+
+        function parseQueryString() {
+
+            //obtain data from querystring
+            var urlParams = window.location.search
+
+            if (urlParams == "") {
+                //we have no query string so no referrer, so return empty string.
+                return "";
+            }
+
+            var strGetQuery = urlParams.split('?')[1]
+            
+            var params = {}, queries, temp, i, l;
+            // Split into key/value pairs
+            queries = strGetQuery.split("&");
+            // Convert the array of strings into an object
+            for (i = 0, l = queries.length; i < l; i++) {
+                temp = queries[i].split('=');
+                params[temp[0]] = temp[1];
+            }
+            return params;
+        }
+
+        function populateControls(queryObj) {
+            var errorstring = "";
+
+            try {
+                //basic validation of query string params
+                if (Number(queryObj.multiple) < 1 || Number(queryObj.multiple) > 100) {
+                    errorstring += "multiple out of range.";
+                }
+                if (Number(queryObj.modulus) < 1 || Number(queryObj.modulus) > 200) {
+                    errorstring += "modulus out of range.";
+                }
+                if (Number(queryObj.radius) < 100 || Number(queryObj.radius) > 250) {
+                    errorstring += "radius out of range.";
+                }
+
+                if (isNaN(queryObj.multiple)) {
+                    errorstring += "multiple is not a number.";
+                }
+                if (isNaN(queryObj.modulus)) {
+                    errorstring += "modulus is not a number.";
+                }
+                if (isNaN(queryObj.radius)) {
+                    errorstring += "radius is not a number.";
+                }
+
+                //populate the RPC radio buttons
+                switch (queryObj.rpc) {
+                    case "js":
+                        radiojs.checked=true;
+                        break;
+                    case "cs":
+                        radiocs.checked = true;
+                        break;
+                    case "ws":
+                        radiows.checked = true;
+                        break;
+                    default:
+                        radiojs.checked = true;
+                        errorstring += "RPC method is not valid.";
+                }
+
+                //populate controls
+                multipleDDL.value = Number(queryObj.multiple);
+                modulusDDL.value = queryObj.modulus;
+                radiusDDL.value = queryObj.radius;
+            }
+            catch (err) {
+                errorstring += " Error occurred.";
+            }
+            finally {
+                if (errorstring != "" ) {
+                    errorstring = "Errors detected in query string. Using defaults to populate screen instead. " + errorstring;
+                }
+                return errorstring;
+            }
+        }
+
+        //#endregion
+
+        //#region testingSaved
+
+        //#endregion
+
+
+        //#region connectCode
+
+        function testConnection() {
+
+            //clear previous response info
+            resetResponse();
+
+            //construct parameters for the RPC.
+            var multiple = multipleDDL.value;
+            var modulus = modulusDDL.value;
+            var radius = radiusDDL.value;
+            var rpcval = document.querySelector("input[name=rpctype]:checked").id;
+            var methodval = document.querySelector("input[name=methodname]:checked").id;
+
+            summarytxt.innerText = "Working.. please wait.";
+
+            prepareApiCall(multiple, modulus, radius, rpcval, methodval, populateTestResponse);
+        }
+
+        function populateTestResponse(err, xmlHttp, starttime) {
+
+            //if error is returned, add it to the response text.
+            var strerr = "";
+            if (err) {
+                strerr += err.toString() + " ";
+            }
+
+            var d = new Date();
+            var duration = d.getTime() - starttime;
+
+            // show the HTTP status in color code (green for success, red for anything else).
+            if (xmlHttp.status == 200) { outstatus.style.color = "lime"; }
+            else { outstatus.style.color = "red";}
+            outstatus.innerText = xmlHttp.status + " " + xmlHttp.statusText;
+
+            summarytxt.innerText = xmlHttp.status + " " + xmlHttp.statusText + ". Method returned in " + duration.toString() + "ms.";
+            httpmethodtxt.innerText = "POST";
+            urltxt.innerText = testurl;
+            bodytxt.innerText = testbody;
+            responsetxt.innerText = strerr + xmlHttp.response;
+        }
+        //#endregion
+
+    </script>
+
+</body>
+</html>
