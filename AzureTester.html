@@ -289,7 +289,7 @@
                     It could be done in client-side JavaScript alone, so this is simply for demo only, of three alternative technologies:
                     <ul>
                         <li>Azure functions built in JavaScript running on a serverless architecture in Node.js</li>
-                        <li>Azure functions built in C# running on a serverless architecture in the .NET framework.</li>
+                        <li>Azure functions built in C# running in a DLL on a serverless architecture in the .NET framework.</li>
                         <li>A WCF service built in C# hosted on an IIS App Service communicating through SOAP.</li>
                     </ul>
                 </span>
@@ -572,7 +572,7 @@
                         break;
                     default:
                         radiojs.checked = true;
-                        errorstring += "RPC method is not valid.";
+                        errorstring += "RPC method is not valid (using default).";
                 }
 
                 //populate controls
@@ -585,7 +585,7 @@
             }
             finally {
                 if (errorstring != "" ) {
-                    errorstring = "Errors detected in query string. Using defaults to populate screen instead. " + errorstring;
+                    errorstring = "Errors detected in query string. " + errorstring;
                 }
                 return errorstring;
             }
@@ -614,30 +614,56 @@
 
             summarytxt.innerText = "Working.. please wait.";
 
-            prepareApiCall(multiple, modulus, radius, rpcval, methodval, populateTestResponse);
+            var promise = prepareApiCallRtnPromise(multiple, modulus, radius, rpcval, methodval, null);
+            //prepareApiCallWithCallback(multiple, modulus, radius, rpcval, methodval, populateTestResponse);
+            promise.then(obj1 => parseResolve(obj1));
+            promise.catch(obj1 => parseReject(obj1));
+        }
+
+        function parseResolve(obj1) {
+            populateTestResponse(null, obj1.rsp, obj1.stime)
+        }
+
+        function parseReject(obj1) {
+            //pass the error object to be displayed
+            populateTestResponse(obj1, obj1.rsp);
         }
 
         function populateTestResponse(err, xmlHttp, starttime) {
 
-            //if error is returned, add it to the response text.
+            var status;
+            var statustext;
+            var maintext;
+            var timeatstart;
             var strerr = "";
-            if (err) {
-                strerr += err.toString() + " ";
+
+            // show the HTTP status in red by default.
+            outstatus.style.color = "red";
+
+            //error info may be returned in an HTTP reponse, or we may only have returned an error.
+            if (xmlHttp) {
+                if (xmlHttp.status == 200) { outstatus.style.color = "lime"; }
+                status = xmlHttp.status;
+                statustext = xmlHttp.statusText;
+                maintext = xmlHttp.response;
+                timeatstart = starttime;
+            } else if (err) {
+                status = err.status;
+                statustext = err.statusText;
+                maintext = err.moreinfo;
+                timeatstart = err.stime;
+                strerr = "Error occurred. ";
             }
 
             var d = new Date();
-            var duration = d.getTime() - starttime;
+            var duration = d.getTime() - timeatstart;
 
-            // show the HTTP status in color code (green for success, red for anything else).
-            if (xmlHttp.status == 200) { outstatus.style.color = "lime"; }
-            else { outstatus.style.color = "red";}
-            outstatus.innerText = xmlHttp.status + " " + xmlHttp.statusText;
-
-            summarytxt.innerText = xmlHttp.status + " " + xmlHttp.statusText + ". Method returned in " + duration.toString() + "ms.";
+            outstatus.innerText = status + " " + statustext;
+            summarytxt.innerText = status + " " + statustext + ". Method returned in " + duration.toString() + "ms.";
             httpmethodtxt.innerText = "POST";
-            urltxt.innerText = testurl;
-            bodytxt.innerText = testbody;
-            responsetxt.innerText = strerr + xmlHttp.response;
+            urltxt.innerText = connurl;
+            bodytxt.innerText = connbody;
+            responsetxt.innerText = strerr + maintext;
         }
         //#endregion
 

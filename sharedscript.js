@@ -3,60 +3,90 @@
 const centreX = 275;
 const centreY = 275;
 
-//const jsMatrixUrl = "http://localhost:7071/api/createMatrixJs";
-//const jsCoordsUrl = "http://localhost:7071/api/createCoordsJs";
-
-//const wcfServiceUrl = "http://localhost:57566/Service.svc";
-
 const jsMatrixUrl = "https://azuremultitablesfuncsapp.azurewebsites.net/api/createMatrixJs?code=FuVpcvNQCb49MyVLndykbaLa/BJNImIEdwFjPrEJSB7OW6FwB3Qfqg==";
 const csMatrixUrl = "https://azuremultitablesfuncsapp.azurewebsites.net/api/createMatrixCs?code=H1kM0i4KT49QaSzR7YurY5xhZGBK13glgts411JdEoaSYonvb30FoQ==";
 const jsCoordsUrl = "https://azuremultitablesfuncsapp.azurewebsites.net/api/createCoordsJs?code=y6AS/7EmQlrpi4HTfkOvd4I6FqlaKUS60s1/ZVWQn7aOpk3oyMFcgw==";
 const csCoordsUrl = "https://azuremultitablesfuncsapp.azurewebsites.net/api/createCoordsCs?code=aqfFykVqx4W0mfiOqXmw3pM2aMqOQe98RRbMXvmpMu8i9SOZ74qwBQ==";
 const wcfServiceUrl = "https://azuremultitableswcfsvc01.azurewebsites.net/Service.svc";
 
-var testbody;
-var testurl;
+var connbody;
+var connurl;
 
+function prepareApiCallWithCallback(multiple, modulus, radius, rpcval, methodname, callback, starttime) {
 
-function prepareApiCall(multiple, modulus, radius, rpcval, methodname, callback, starttime) {
-
-    testbody = "";
-    testurl = "";
+    connbody = "";
+    connurl = "";
 
     //if not a Wcf service call (for which URL is static), then deduce the method call URL.
     switch (rpcval) {
         case "js":
             if (methodname == "createCoords") {
-                testurl = jsCoordsUrl;
-            } else if (methodname == "createMatrix") { testurl = jsMatrixUrl; }
+                connurl = jsCoordsUrl;
+            } else if (methodname == "createMatrix") { connurl = jsMatrixUrl; }
             break;
         case "cs":
             if (methodname == "createCoords") {
-                testurl = csCoordsUrl;
-            } else if (methodname == "createMatrix") { testurl = csMatrixUrl; }
+                connurl = csCoordsUrl;
+            } else if (methodname == "createMatrix") { connurl = csMatrixUrl; }
     }
 
     //construct the body content to post (and also set the Wcf service call url.)
     switch (rpcval) {
         case "js":
         case "cs":
-            testbody += createJsonBody(methodname, multiple, modulus, radius);
+            connbody += createJsonBody(methodname, multiple, modulus, radius);
             break;
         case "ws":
-            testbody += createXmlBody(methodname, multiple, modulus, radius);
-            testurl = wcfServiceUrl;
+            connbody += createXmlBody(methodname, multiple, modulus, radius);
+            connurl = wcfServiceUrl;
     }
 
     //note the actual call will be asynchronous by default! (because it uses XHR).
-    //summarytxt.innerText = "Working.. please wait.";
     if (starttime == undefined) {
         var d = new Date();
         starttime = d.getTime();
     }
-    //var d = new Date();
-    //var starttime = d.getTime();
+    makeApiCallWithCallback(connurl, connbody, methodname, callback, starttime);
+}
 
-    makeApiCall(testurl, testbody, methodname, callback, starttime);
+//same function as above but return an explicit promise object containing our data.
+function prepareApiCallRtnPromise(multiple, modulus, radius, rpcval, methodname, starttime) {
+
+    connbody = "";
+    connurl = "";
+
+    //if not a Wcf service call (for which URL is static), then deduce the method call URL.
+    switch (rpcval) {
+        case "js":
+            if (methodname == "createCoords") {
+                connurl = jsCoordsUrl;
+            } else if (methodname == "createMatrix") { connurl = jsMatrixUrl; }
+            break;
+        case "cs":
+            if (methodname == "createCoords") {
+                connurl = csCoordsUrl;
+            } else if (methodname == "createMatrix") { connurl = csMatrixUrl; }
+    }
+
+    //construct the body content to post (and also set the Wcf service call url.)
+    switch (rpcval) {
+        case "js":
+        case "cs":
+            connbody += createJsonBody(methodname, multiple, modulus, radius);
+            break;
+        case "ws":
+            connbody += createXmlBody(methodname, multiple, modulus, radius);
+            connurl = wcfServiceUrl;
+    }
+
+    //note the actual call will be asynchronous by default! (because it uses XHR).
+    if (starttime == undefined) {
+        var d = new Date();
+        starttime = d.getTime();
+    }
+
+    //simply pass the promise back up the chain.
+    return makeApiCallRtnPromise(connurl, connbody, methodname, starttime);
 }
 
 function createJsonBody(method, multiple, modulus, radius) {
@@ -87,7 +117,7 @@ function createXmlBody(method, multiple, modulus, radius) {
     return body;
 }
 
-function makeApiCall(url, body, methodname, callback, starttime) {
+function makeApiCallWithCallback(url, body, methodname, callback, starttime) {
     // Create HTTP request
     var xmlHttp = new XMLHttpRequest();
 
@@ -95,7 +125,7 @@ function makeApiCall(url, body, methodname, callback, starttime) {
 
     xmlHttp.onreadystatechange = function () {
         if (this.readyState == 4)
-            //&& this.status == 200)
+        //&& this.status == 200)
         {
             callback(null, this, starttime);
         }
@@ -121,3 +151,50 @@ function makeApiCall(url, body, methodname, callback, starttime) {
     xmlHttp.send(body);
 }
 
+//same function as above but return an explicit promise object containing our data.
+function makeApiCallRtnPromise(url, body, methodname, starttime) {
+
+    console.log("makeapicallrtnpromise" + methodname.toString() + starttime.toString());
+
+    return new Promise(function (resolve, reject) { //so basically this returns a promise result of an anon function.
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("POST", url, true);
+        switch (url) {
+            case wcfServiceUrl:
+                xmlHttp.setRequestHeader("Content-type", "text/xml");
+                //set the SOAP action from the body content main element name
+                xmlHttp.setRequestHeader("SOAPAction", "http://tempuri.org/IService/" + methodname);
+                break;
+            default:
+                xmlHttp.setRequestHeader("Content-type", "application/json");
+        }
+
+        xmlHttp.onreadystatechange = function () {
+            if (this.readyState == 4)
+                if (this.status >= 200 && this.status < 300) {
+                    resolve({
+                        rsp: xmlHttp,
+                        stime: starttime
+                    });
+
+                } else {
+                    reject({
+                        status: this.status,
+                        statusText: xmlHttp.statusText,
+                        moreinfo: " Request to " + methodname + " failed." + xmlHttp.response,
+                        stime: starttime
+                    });
+                }
+        };
+
+        xmlHttp.onerror = function () {
+            reject({
+                status: this.status,
+                statusText: xmlHttp.statusText,
+                moreinfo: " Request to " + methodname + " failed.",
+                stime: starttime
+            });
+        };
+        xmlHttp.send(body);
+    });
+}
