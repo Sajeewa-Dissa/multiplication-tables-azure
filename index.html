@@ -1,442 +1,110 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Modulo Multiplication Circle JSON</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Modulo Multiplication Circle JSon</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
     <script type="text/javascript" src="sharedscript.js"></script>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            background-color: #666666;
-            background-image: url('logo.png');
-            background-repeat: no-repeat;
-            background-position: 2% 2%;
-            background-size: auto auto;
-        }
-
-        .header {
-            padding: 20px;
-            text-align: center;
-            color: #aaaaaa;
-            width: 100%;
-        }
-
-        .footer {
-            padding: 10px;
-            text-align: center;
-            color: #aaaaaa;
-            width: 100%;
-        }
-        /* column styles */
-        .column {
-            float: left;
-        }
-            /* Left and right column */
-            .column.side {
-                width: 9%;
-            }
-            /* Middle columns */
-            .column.middleleft {
-                width: 48%;
-                padding: 10px;
-                max-width: 800px;
-                min-width: 800px;
-            }
-
-            .column.middleright {
-                width: 34%;
-                padding: 10px;
-                max-width: 550px;
-            }
-        /* Clear floats after the columns */
-        .row:after {
-            content: "";
-            display: table;
-            clear: both;
-        }
-        /* Responsive layout - makes the columns stack on top of each other instead of next to each other */
-        @media screen and (max-width: 1600px) {
-            .column.side, .column.middleleft, .column.middleright {
-                width: 100%;
-            }
-        }
-        /*update background for small screens*/
-        @media screen and (max-width: 800px) {
-            body {
-                background-image: url('logotransp.png');
-            }
-        }
-
-        #controlgrid {
-            display: grid;
-            grid-template-columns: 5fr 1fr 15fr;
-            grid-auto-rows: 80px;
-            max-width: 800px;
-        }
-
-            #controlgrid > div { /*style for direct child div elements */
-                background: #666666;
-                padding: 1em;
-            }
-
-                #controlgrid > div:nth-child(odd) { /*every odd div will be darker */
-                    background: #616161;
-                    padding: 1em;
-                }
-
-        .blueButton, .blueButtonSimulator {
-            height: 30px;
-            width: 120px;
-            border-style: none;
-            border-radius: 8px;
-            background-color: #4488DD;
-            color: white;
-        }
-
-            .blueButton:hover {
-                background-color: #5599FF;
-            }
-
-            .blueButton:active {
-                background-color: #77BBFF;
-            }
-
-            .blueButtonSimulator a {
-                color: white;
-                display: block;
-                border-style: none;
-                border-radius: 8px;
-                background-color: #4488DD;
-                height: 30px;
-                width: 120px;
-                text-decoration: none;
-                text-align: center;
-                padding: 5px 10px 10px 10px;
-            }
-
-                .blueButtonSimulator a:hover {
-                    background-color: #5599FF;
-                }
-
-                .blueButtonSimulator a:active {
-                    background-color: #77BBFF;
-                }
-
-        .buttonsimcontainer {
-            padding-top: 20px;
-            /*padding-bottom: 10px;*/
-            justify-content: flex-start;
-        }
-
-
-        #toggleBut {
-            font-size: large;
-        }
-
-        .blueButtonLarge {
-            height: 40px;
-            width: 150px;
-        }
-
-        .slidecontainer, .radiogroupcontainer {
-            width: 550px;
-            max-width: 525px;
-            justify-content: flex-start;
-        }
-
-        .buttoncontainer, .radiocontainer {
-            padding: 10px;
-            padding-bottom: 10px;
-            justify-content: flex-start;
-        }
-
-        .spanOutput {
-            font-size: larger;
-            color: yellow;
-        }
-
-        input[type=range] {
-            height: 25px;
-            -webkit-appearance: none;
-            margin: 10px 0;
-            width: 100%;
-        }
-
-            input[type=range]:focus {
-                outline: none;
-            }
-
-            input[type=range]::-webkit-slider-runnable-track {
-                width: 100%;
-                height: 5px;
-                cursor: pointer;
-                box-shadow: 0px 0px 0px #000000;
-                background: #2497E3;
-                border-radius: 1px;
-                border: 0px solid #000000;
-            }
-
-            input[type=range]::-webkit-slider-thumb {
-                box-shadow: 0px 0px 0px #000000;
-                border: 1px solid #2497E3;
-                height: 18px;
-                width: 18px;
-                border-radius: 25px;
-                background: #A1D0FF;
-                cursor: pointer;
-                -webkit-appearance: none;
-                margin-top: -7px;
-            }
-
-            input[type=range]:focus::-webkit-slider-runnable-track {
-                background: #2497E3;
-            }
-
-            input[type=range]::-ms-track {
-                width: 100%;
-                height: 5px;
-                cursor: pointer;
-                background: transparent;
-                border-color: transparent;
-                color: transparent;
-            }
-
-            input[type=range]::-ms-fill-lower {
-                background: #2497E3;
-                border: 0px solid #000000;
-                border-radius: 2px;
-                box-shadow: 0px 0px 0px #000000;
-            }
-
-            input[type=range]::-ms-fill-upper {
-                background: #2497E3;
-                border: 0px solid #000000;
-                border-radius: 2px;
-                box-shadow: 0px 0px 0px #000000;
-            }
-
-            input[type=range]::-ms-thumb {
-                margin-top: 1px;
-                box-shadow: 0px 0px 0px #000000;
-                border: 1px solid #2497E3;
-                height: 18px;
-                width: 18px;
-                border-radius: 25px;
-                background: #A1D0FF;
-                cursor: pointer;
-            }
-
-            input[type=range]:focus::-ms-fill-lower {
-                background: #2497E3;
-            }
-
-            input[type=range]:focus::-ms-fill-upper {
-                background: #2497E3;
-            }
-
-        .slider {
-            background-color: inherit;
-        }
-        /* The radio button container */
-        .radiocontainer {
-            display: inline-block;
-            position: relative;
-            padding-left: 30px;
-            padding-right: 30px;
-            /*margin-bottom: 12px;*/
-            cursor: pointer;
-            font-size: 14px;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-            /* Hide the browser's default radio button */
-            .radiocontainer input {
-                position: absolute;
-                opacity: 0;
-                cursor: pointer;
-            }
-        /* Create a custom radio button */
-        .checkmark {
-            position: absolute;
-            top: 10px;
-            left: 0;
-            height: 25px;
-            width: 25px;
-            background-color: #585858;
-            border-radius: 50%;
-        }
-        /* On mouse-over, add a lighter grey background color */
-        .radiocontainer:hover input ~ .checkmark {
-            background-color: #707070;
-        }
-        /* When the radio button is checked, add a blue background */
-        .radiocontainer input:checked ~ .checkmark {
-            background-color: #4488DD;
-        }
-        /* Create the indicator (the dot/circle - hidden when not checked) */
-        .checkmark:after {
-            content: "";
-            position: absolute;
-            display: none;
-        }
-        /* Show the indicator (dot/circle) when checked */
-        .radiocontainer input:checked ~ .checkmark:after {
-            display: block;
-        }
-        /* Style the indicator (dot/circle) */
-        .radiocontainer .checkmark:after {
-            top: 9px;
-            left: 9px;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: yellow;
-        }
-
-        a {
-            color: #66AAFF;
-        }
-
-            a:hover {
-                color: #dddddd;
-            }
-
-        .middleright p {
-            float: right;
-        }
-
-        #statusmsg, #msg {
-            float: right;
-            /*padding-right: 20px;*/
-        }
-
-        .subheading {
-            font-size: larger;
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" href="site.css" />
 </head>
 <body onLoad="JavaScript:setOnRefresh();">
     <form action="#" method="post">
-        <div>
-            <header class="header">
-                <h1>Modulo Multiplication Circle Using JSON and the Azure Cloud.</h1>
-                <p>Geometric patterns formed by multiplication in modulo n, expressed by joining points along the circumference of a circle.</p>
-            </header>
-
-            <div class="row">
-                <div class="column side">
-                    <p></p>
+    <div id="page-container">
+        <header class="header">
+            <img src="logo.png" alt="lab logo" class="logo">
+            <h1>Modulo Multiplication Circle Using JSON and the Azure Cloud.</h1>
+            <p>Geometric patterns formed by multiplication in modulo n, joining points along the circumference of a circle.</p>
+        </header>
+        <div class="wrapper">
+            <div class="intro">
+                <section id="textcontent">
+                    <p class="firstpara">
+                        When enumerating the multiplication times tables as lines in a circle, strange and beautiful patterns are formed.
+                        For this exercise, we divide a circle's diameter into equi-distant points with the 9 o'clock position representing zero (by convention), and each point clockwise being a unit increment.
+                        For any times table, the result is expressed as a series of lines joining each factor to its product. When we come full circle, we can continue the multiplication
+                        by re-using the points via modulo division. A full explanation of this idea is cited in the YouTube link below.
+                    </p>
+                    <p>
+                        This page is created in HTML using inline CSS and JavaScript with calls to <strong>Azure Functions and Cloud Services.</strong> The patterns are drawn on a canvas element, and the page includes
+                            grid layouts.
+                    </p>
+                    <p class="lastpara">
+                        <span><a href="https://github.com/Sajeewa-Dissa/multiplication-tables-azure" target="_blank">GitHub</a> the source code for this project is available here.</span><br />
+                        <span><a href="https://sajeewa-dissa.github.io/multiplication-tables-js/index.html">JavaScript</a> the same functionality found here, but uses (more responsive) client-side JavaScript only.</span><br />
+                        <span><a href="https://www.youtube.com/watch?v=qhbuKbxJsk8" target="_blank">YouTube Mathologer</a> the linked YouTube video was the inspiration for this webpage.</span><br />
+                    </p>
+                </section>
+            </div>
+            <div class="canvaswrap">
+                    <canvas id="canvas" width="550" height="550">Your browser doesn't support the canvas element</canvas>
+            </div>
+            <div class="controls">
+                <div>
+                    <label class="subheading">Settings:</label>
                 </div>
-
-                <div class="column middleleft">
-                    <section id="textcontent">
-                        <p>
-                            When enumerating the multiplication times tables as lines in a circle, strange and beautiful patterns are formed.
-                            For this exercise, we divide a circle's diameter into equi-distant points with the 9 o'clock position representing zero (by convention), and each point clockwise being a unit increment.
-                            For any times table, the result is expressed as a series of lines joining each factor to its product. When we come full circle, we can continue the multiplication
-                            by re-using the points via modulo division. A full explanation of this idea is cited in the YouTube link below.
-                        </p>
-                        <p>
-                            This page is created in HTML using inline CSS and JavaScript with calls to <strong>Azure Functions and Cloud Services.</strong> The patterns are drawn on a canvas element, and the page includes
-                            a simple grid display.
-                        </p>
-                        <p>
-                            <span><a href="https://github.com/Sajeewa-Dissa/multiplication-tables-azure" target="_blank">GitHub</a> the source code for this project is available here.</span><br />
-                            <span><a href="https://sajeewa-dissa.github.io/multiplication-tables-js/index.html">JavaScript</a> the same functionality found here, but uses (more responsive) client-side JavaScript only.</span><br />
-                            <span><a href="https://www.youtube.com/watch?v=qhbuKbxJsk8" target="_blank">YouTube Mathologer</a> the linked YouTube video was the inspiration for this webpage.</span><br />
-                        </p>
-                        <div>
-                            <label class="subheading">Settings:</label>
-                        </div>
-                    </section>
-                    <div class="buttoncontainer">
-                        <input type="button" id="toggleBut" class="blueButtonLarge blueButton" value="Autoplay" />
-                    </div>
-                    <div id="controlgrid">
-                        <div>
-                            <p>Multiply by (1 to 100):</p>
-                        </div>
-                        <div>
-                            <p><output id="multiplierOut" class="spanOutput"></output></p>
-                        </div>
-                        <div class="slidecontainer">
-                            <input type="range" min="1" max="100" value="1" class="slider" id="myRange1"> <!--initial value 1-->
-                        </div>
-                        <div>
-                            <p>Modulo n (1 to 200):</p>
-                        </div>
-                        <div>
-                            <p><output id="moduloOut" class="spanOutput"></output></p>
-                        </div>
-                        <div class="slidecontainer">
-                            <input type="range" min="1" max="200" value="200" class="slider" id="myRange2"> <!--initial value 200-->
-                        </div>
-                        <div>
-                            <p>Radius (100 to 250):</p>
-                        </div>
-                        <div>
-                            <p><output id="radiusOut" class="spanOutput"></output></p>
-                        </div>
-                        <div class="slidecontainer">
-                            <input type="range" min="100" max="250" value="250" class="slider" id="myRange3"> <!--initial value 250-->
-                        </div>
-                        <div class="buttonsimcontainer">
-                            <!--<input type="button" id="testBut" class="blueButton" value="Test Azure" />-->
-                            <div class="blueButtonSimulator">
-                                <a id="linktester" href="AzureTester.html">Test Azure</a>
-                            </div>
-                        </div>
-                        <div>
-                        </div>
-                        <div class="radiogroupcontainer">
-                            <label class="radiocontainer">
-                                Azure JS Fn.
-                                <input type="radio" id="js" checked="checked" name="rpctype">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label class="radiocontainer">
-                                Azure C# Fn.
-                                <input type="radio" id="cs" name="rpctype">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label class="radiocontainer">
-                                Azure Cloud Svc.
-                                <input type="radio" id="ws" name="rpctype">
-                                <span class="checkmark"></span>
-                            </label>
-                        </div>
-
-                    </div>
+                <div class="buttoncontainer">
+                    <input type="button" id="toggleBut" class="blueButtonLarge blueButton" value="Autoplay" />
                 </div>
-
-                <div class="column middleright">
+                <div id="controlgrid">
                     <div>
-                        <canvas id="canvas" width="550" height="550">Your browser doesn't support the canvas element</canvas>
-                        <p>
-                            <span id="statusmsg"></span>
-                        </p>
+                        <p>Multiply by (1 to 100):</p>
                     </div>
-                </div>
-
-                <div class="column side">
-                    <p></p>
+                    <div>
+                        <p><output id="multiplierOut" class="spanOutput"></output></p>
+                    </div>
+                    <div class="slidecontainer">
+                        <input type="range" min="1" max="100" value="1" class="slider" id="myRange1"> <!--initial value 1-->
+                    </div>
+                    <div>
+                        <p>Modulo n (1 to 200):</p>
+                    </div>
+                    <div>
+                        <p><output id="moduloOut" class="spanOutput"></output></p>
+                    </div>
+                    <div class="slidecontainer">
+                        <input type="range" min="1" max="200" value="200" class="slider" id="myRange2"> <!--initial value 200-->
+                    </div>
+                    <div>
+                        <p>Radius (100 to 250):</p>
+                    </div>
+                    <div>
+                        <p><output id="radiusOut" class="spanOutput"></output></p>
+                    </div>
+                    <div class="slidecontainer">
+                        <input type="range" min="100" max="250" value="250" class="slider" id="myRange3"> <!--initial value 250-->
+                    </div>
+                    <div class="buttonsimcontainer">
+                        <div class="blueButtonSimulator">
+                            <a id="linktester" href="AzureTester.html">Test Azure</a>
+                        </div>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="radiogroupcontainer">
+                        <label class="radiocontainer">
+                            Azure JS Fn.
+                            <input type="radio" id="js" checked="checked" name="rpctype">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="radiocontainer">
+                            Azure C# Fn.
+                            <input type="radio" id="cs" name="rpctype">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="radiocontainer">
+                            Azure Cloud Svc.
+                            <input type="radio" id="ws" name="rpctype">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
                 </div>
             </div>
-
-            <footer class="footer">
-                <p>&#169;<small>Copyright 2019 Sajeewa Dissanayake</small></p>
-            </footer>
+        </div>
+        <div class="footer">
+            <p>&#169;<small> Copyright 2019 Sajeewa Dissanayake</small></p>
         </div>
 
         <script>
@@ -819,7 +487,7 @@
             }
 
         </script>
-
+    </div>
     </form>
 </body>
 </html>

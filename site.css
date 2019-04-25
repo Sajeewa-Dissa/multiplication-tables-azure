@@ -1,0 +1,422 @@
+@import url("https://fonts.googleapis.com/css?family=Merriweather:300,900|Six+Caps");
+
+*, *::before, *::after {box-sizing: border-box;}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Merriweather", serif;
+    font-size: 0.8rem;
+    background-color: #666666;
+    background-repeat: no-repeat;
+    background-position: 2% 2%;
+    background-size: auto auto;
+    max-width: 100%;
+    height: auto;
+}
+
+#page-container {
+    position: relative;
+    min-height: 100vh;
+  }
+
+.header {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+    color: #aaaaaa;
+    width:100%;
+}
+    .header > h1, .header > p{
+        color: white;
+    }
+
+    div.wrapper {
+        padding-bottom: 3rem;    /* Footer height */
+      }
+
+.footer {
+    /* padding: 10px; */
+    text-align: center;
+
+    position: absolute;
+    bottom: 0;
+    height: 3rem;            /* Footer height */
+
+    color: #aaaaaa;
+    width:100%;
+}
+
+/* #region controls */
+
+#controlgrid {
+    display: grid;
+    grid-template-columns: 5fr 1fr 15fr;
+    grid-auto-rows: 80px;
+    max-width: 800px;
+    font-size: 0.9rem;
+    color: black;
+}
+
+    #controlgrid > div { /*style for direct child div elements */
+        background: #666666;
+        padding: 1em;
+    }
+
+        #controlgrid > div:nth-child(odd) { /*every odd div will be darker */
+            background: #616161;
+            padding: 1em;
+        }
+
+.blueButton, .blueButtonSimulator {
+    height: 30px;
+    width: 120px;
+    border-style: none;
+    border-radius: 8px;
+    background-color: #4488DD;
+    color: white;
+}
+
+    .blueButton:hover {
+        background-color: #5599FF;
+    }
+
+    .blueButton:active {
+        background-color: #77BBFF;
+    }
+
+    .blueButtonSimulator a {
+        color: white;
+        display: block;
+        border-style: none;
+        border-radius: 8px;
+        background-color: #4488DD;
+        height: 30px;
+        width: 120px;
+        text-decoration: none;
+        text-align: center;
+        padding: 5px 10px 10px 10px;
+    }
+
+        .blueButtonSimulator a:hover {
+            background-color: #5599FF;
+        }
+
+        .blueButtonSimulator a:active {
+            background-color: #77BBFF;
+        }
+
+.buttonsimcontainer {
+    padding-top: 20px;
+    /*padding-bottom: 10px;*/
+    justify-content: flex-start;
+}
+
+#toggleBut {
+    font-size: large;
+}
+
+.blueButtonLarge {
+    height: 40px;
+    width: 150px;
+}
+
+.slidecontainer, .radiogroupcontainer {
+    width: 550px;
+    max-width: 525px;
+    justify-content: flex-start;
+}
+
+.buttoncontainer, .radiocontainer {
+    padding: 10px;
+    padding-bottom: 10px;
+    justify-content: flex-start;
+}
+
+.spanOutput {
+    font-size: larger;
+    color: yellow;
+}
+
+input[type=range] {
+    height: 25px;
+    -webkit-appearance: none;
+    margin: 10px 0;
+    width: 100%;
+}
+
+    input[type=range]:focus {
+        outline: none;
+    }
+
+    input[type=range]::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 5px;
+        cursor: pointer;
+        box-shadow: 0px 0px 0px #000000;
+        background: #2497E3;
+        border-radius: 1px;
+        border: 0px solid #000000;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+        box-shadow: 0px 0px 0px #000000;
+        border: 1px solid #2497E3;
+        height: 18px;
+        width: 18px;
+        border-radius: 25px;
+        background: #A1D0FF;
+        cursor: pointer;
+        -webkit-appearance: none;
+        margin-top: -7px;
+    }
+
+    input[type=range]:focus::-webkit-slider-runnable-track {
+        background: #2497E3;
+    }
+
+    input[type=range]::-ms-track {
+        width: 100%;
+        height: 5px;
+        cursor: pointer;
+        background: transparent;
+        border-color: transparent;
+        color: transparent;
+    }
+
+    input[type=range]::-ms-fill-lower {
+        background: #2497E3;
+        border: 0px solid #000000;
+        border-radius: 2px;
+        box-shadow: 0px 0px 0px #000000;
+    }
+
+    input[type=range]::-ms-fill-upper {
+        background: #2497E3;
+        border: 0px solid #000000;
+        border-radius: 2px;
+        box-shadow: 0px 0px 0px #000000;
+    }
+
+    input[type=range]::-ms-thumb {
+        margin-top: 1px;
+        box-shadow: 0px 0px 0px #000000;
+        border: 1px solid #2497E3;
+        height: 18px;
+        width: 18px;
+        border-radius: 25px;
+        background: #A1D0FF;
+        cursor: pointer;
+    }
+
+    input[type=range]:focus::-ms-fill-lower {
+        background: #2497E3;
+    }
+
+    input[type=range]:focus::-ms-fill-upper {
+        background: #2497E3;
+    }
+
+    .slider {
+        background-color:inherit;
+    }
+
+    /* The radio button container */
+    .radiocontainer {
+        display: inline-block;
+        position: relative;
+        padding-left: 30px;
+        padding-right: 30px;
+        /*margin-bottom: 12px;*/
+        cursor: pointer;
+        font-size: 14px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+        /* Hide the browser's default radio button */
+        .radiocontainer input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+    /* Create a custom radio button */
+    .checkmark {
+        position: absolute;
+        top: 10px;
+        left: 0;
+        height: 25px;
+        width: 25px;
+        background-color: #585858;
+        border-radius: 50%;
+    }
+
+    /* On mouse-over, add a lighter grey background color */
+    .radiocontainer:hover input ~ .checkmark {
+        background-color: #707070;
+    }
+
+    /* When the radio button is checked, add a blue background */
+    .radiocontainer input:checked ~ .checkmark {
+        background-color: #4488DD;
+    }
+
+    /* Create the indicator (the dot/circle - hidden when not checked) */
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+
+    /* Show the indicator (dot/circle) when checked */
+    .radiocontainer input:checked ~ .checkmark:after {
+        display: block;
+    }
+
+    /* Style the indicator (dot/circle) */
+    .radiocontainer .checkmark:after {
+        top: 9px;
+        left: 9px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: yellow;
+    }
+
+    a {
+        color: #66AAFF;
+    }
+
+        a:hover {
+            color: #dddddd;
+        }
+
+    #statusmsg, #msg {
+        float: right;
+        /*padding-right: 20px;*/
+    }
+
+    .subheading{
+        font-size:larger;
+        font-weight:bold;
+    }
+
+    .logo{
+        float:left;
+    }
+
+/* #endregion */
+
+    div.intro{
+        min-width: 800px;
+        max-width: 800px;
+    }
+
+
+    div.canvaswrap{
+        max-width: 550px;
+    }
+
+    div.controls{
+        max-width: 800px;
+    }
+
+
+
+/* Extra Small Devices, Phones */ 
+/* @media only screen and (min-width : 480px) {
+} */
+    
+/* Small Devices, Tablets */
+/* @media only screen and (min-width : 768px) {
+} */
+
+
+    
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 1360px) {
+    
+    .wrapper {
+        display: grid;
+        grid-template-columns: 550px auto;
+        grid-gap: 10px;
+        justify-content: center;
+        align-items: center;
+        padding: 10px 0,}
+    
+        .wrapper > .intro {
+                grid-column: 2;
+                grid-row: 1;
+            }
+
+        .wrapper > .canvaswrap {
+            grid-column: 1;
+            grid-row: 1/3;
+        }
+
+        .wrapper > .controls {
+            grid-column: 2;
+            grid-row: 2;
+          }
+}
+    
+/* Large Devices, Wide Screens */
+/* @media only screen and (min-width : 1200px) {
+} */
+@media only screen and (max-width: 1359px) 
+{
+    div.intro{
+        min-width: 800px;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    div.controls{
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    div.canvaswrap{
+        position: relative;
+        left: 20%;
+        transform: translate(-5%);
+    }
+}
+
+
+@media only screen and (max-width: 850px) 
+{
+    .header, .footer{
+        min-width: 800px;
+        max-width: 800px;
+    }
+
+    div.intro{
+        /* min-width: 800px; */
+        padding-left: 1rem;
+        left: 0;
+        transform: translateX(0);
+    }
+
+    p.firstpara{
+        margin-top:0;
+    }
+
+    p.lastpara{
+        margin-bottom:0;
+    }
+
+    div.canvaswrap{
+        position: relative;
+        padding-left: 1rem;
+        left: 0;
+        transform: translateX(0);
+    }
+}
+
