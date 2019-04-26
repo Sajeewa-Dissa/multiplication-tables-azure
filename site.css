@@ -295,9 +295,9 @@ input[type=range] {
             color: #dddddd;
         }
 
-    #statusmsg, #msg {
-        float: right;
-        /*padding-right: 20px;*/
+    #statusmsg {
+        float:right;
+        padding-right: 30px;
     }
 
     .subheading{
@@ -362,6 +362,7 @@ input[type=range] {
             grid-column: 2;
             grid-row: 2;
           }
+
 }
     
 /* Large Devices, Wide Screens */
@@ -386,6 +387,7 @@ input[type=range] {
         position: relative;
         left: 20%;
         transform: translate(-5%);
+        padding-bottom: 1rem;
     }
 }
 
@@ -415,7 +417,8 @@ input[type=range] {
     div.canvaswrap{
         position: relative;
         padding-left: 1rem;
-        left: 0;
+        padding-bottom: 1rem;
+        /* left: 0; */
         transform: translateX(0);
     }
 }
