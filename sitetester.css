@@ -269,6 +269,10 @@ a {
     float:left;
 }
 
+#statusdisplay{
+    font-size: larger;
+}
+
 /* #endregion */
 
 @media screen and (min-width: 1200px) {
