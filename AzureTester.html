@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Azure Connection Tester</title>
@@ -107,12 +107,11 @@
             </div>
 
             <div id="responsegrid">
-                <div><label class="subheading">Summary:</label></div><div><textarea class="respDisplay" id="txtsummary" rows="1" readonly="readonly"></textarea></div>
-                <div><label class="subheading">HTTP Method:</label></div><div><textarea class="respDisplay" id="txtHttpMethod" rows="1" readonly="readonly"></textarea></div>
-                <div><label class="subheading">Request URL:</label></div><div><textarea class="respDisplay" id="txturl" rows="2" readonly="readonly"></textarea></div>
-                <div><label class="subheading">Request Body:</label></div><div><textarea class="respDisplay" id="txtbody" rows="3" readonly="readonly"></textarea></div>
-                <div><label class="subheading">Response:</label></div><div><textarea class="respDisplay" id="txtresponse" rows="6" readonly="readonly"></textarea></div>
-                <!--<div><label class="subheading">Resp. Text/XML:</label></div><div><textarea class="respDisplay" id="txtrespcontent" rows="5" readonly="readonly"></textarea></div>-->
+                <div><label class="subheading">Summary:</label></div><div><textarea class="respDisplay" id="txtsummary" readonly="readonly"></textarea></div>
+                <div><label class="subheading">HTTP Method:</label></div><div><textarea class="respDisplay" id="txthttpmethod" readonly="readonly"></textarea></div>
+                <div><label class="subheading">Request URL:</label></div><div><textarea class="respDisplay" id="txturl" readonly="readonly"></textarea></div>
+                <div><label class="subheading">Request Body:</label></div><div><textarea class="respDisplay" id="txtbody" readonly="readonly"></textarea></div>
+                <div><label class="subheading">Response:</label></div><div><textarea class="respDisplay" id="txtresponse" readonly="readonly"></textarea></div>
             </div>
 
         </div>
@@ -135,26 +134,15 @@
         var radiojs = document.getElementById("js");
         var radiocs = document.getElementById("cs");
         var radiows = document.getElementById("ws");
-        var radiocoords = document.getElementById("createCoords") 
-        var radiomatrix = document.getElementById("createMatrix") 
-
-        //var anchor = document.getElementById("linkClose");
+        var radiocoords = document.getElementById("createCoords")
+        var radiomatrix = document.getElementById("createMatrix")
 
         var outstatus = document.getElementById("statusdisplay");
         var summarytxt = document.getElementById("txtsummary");
-        var httpmethodtxt = document.getElementById("txtHttpMethod");
+        var httpmethodtxt = document.getElementById("txthttpmethod");
         var urltxt = document.getElementById("txturl");
         var bodytxt = document.getElementById("txtbody");
         var responsetxt = document.getElementById("txtresponse");
-        //var respcontenttxt = document.getElementById("txtrespcontent");
-
-
-        //define global variables and initial values
-        //const centreX = 275;
-        //const centreY = 275;
-        //var querystringObj; //a JSON object to hold query string data from referrer. TODO maybe make this local.
-        //var startTime //global function call start time
-
 
         //call functions to populate dropdowns (only req'd on initial loading)
         populateMultiple();
@@ -201,7 +189,7 @@
         }
 
         function resetResponse() {
-            //reset all response controls to blank. 
+            //reset all response controls to blank.
             var els = document.getElementsByClassName("respDisplay");
             [].forEach.call(els, function (el) { el.innerText = ""; });
         }
@@ -262,7 +250,7 @@
             }
 
             var strGetQuery = urlParams.split('?')[1]
-            
+
             var params = {}, queries, temp, i, l;
             // Split into key/value pairs
             queries = strGetQuery.split("&");
@@ -332,11 +320,6 @@
         }
 
         //#endregion
-
-        //#region testingSaved
-
-        //#endregion
-
 
         //#region connectCode
 
