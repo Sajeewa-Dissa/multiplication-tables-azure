@@ -267,7 +267,7 @@ a {
     }
     
     #txturl{
-        height:2.5rem;
+        height:5rem;
     }
     
     #txtbody{
@@ -275,7 +275,7 @@ a {
     }
     
     #txtresponse{
-        height:8rem;
+        height:6rem;
     }
 
 #errormsg {
@@ -341,7 +341,7 @@ a {
 
     /* reduce height of textarea display as width expands */
      #txturl{
-        height:2rem;
+        height:4rem;
     }
     
     #txtbody{
@@ -349,7 +349,7 @@ a {
     }
     
     #txtresponse{
-        height:8rem;
+        height:6rem;
     }
 }
 
