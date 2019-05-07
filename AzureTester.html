@@ -365,7 +365,8 @@
 
             //error info may be returned in an HTTP reponse, or we may only have returned an error.
             if (xmlHttp) {
-                if (xmlHttp.status == 200) { outstatus.style.color = "lime"; }
+                if (xmlHttp.status == 200) { outstatus.style.color = "lime";
+                							 outstatus.style.fontSize = "large";}
                 status = xmlHttp.status;
                 statustext = xmlHttp.statusText;
                 maintext = xmlHttp.response;
