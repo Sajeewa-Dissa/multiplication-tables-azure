@@ -82,7 +82,9 @@ body {
     grid-auto-rows: 50px;
     max-width: 600px;
     min-width: 600px;
-    padding-left: 10px
+    padding-left: 10px;
+    height: 100%;
+    width: 100%;
 }
 
     #controlgrid > div { /*style for direct child div elements */
@@ -139,10 +141,15 @@ body {
     justify-content: flex-start;
 }
 
-.buttoncontainer, .selectcontainer, .statuscontainer {
+.buttoncontainer, .statuscontainer {
     padding: 10px;
-    padding-bottom: 10px;
-    justify-content: flex-start;
+    justify-content:flex-start;
+}
+
+.selectcontainer{
+    padding: 10px;
+    justify-content:flex-start;
+    padding-top: 15px;
 }
 
 #statusdisplay {
