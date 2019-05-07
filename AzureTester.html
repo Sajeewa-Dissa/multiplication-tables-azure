@@ -365,8 +365,9 @@
 
             //error info may be returned in an HTTP reponse, or we may only have returned an error.
             if (xmlHttp) {
-                if (xmlHttp.status == 200) { outstatus.style.color = "lime";
-                							 outstatus.style.fontSize = "large";}
+                if (xmlHttp.status == 200) {
+                    outstatus.style.color = "lime";
+                    increaseFontSize(outstatus, 5);}
                 status = xmlHttp.status;
                 statustext = xmlHttp.statusText;
                 maintext = xmlHttp.response;
@@ -390,6 +391,18 @@
             responsetxt.innerText = strerr + maintext;
         }
         //#endregion
+
+        //#region miscellaneous
+
+        function increaseFontSize(element, incr) {
+            let compStyles = window.getComputedStyle(element);
+            let fontSize = parseInt(compStyles.getPropertyValue('font-size'));
+            let newFontSize = fontSize + incr;
+            element.style.fontSize = newFontSize + 'px' ;
+        }
+
+        //#endregion
+
 
     </script>
 
