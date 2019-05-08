@@ -367,7 +367,7 @@
             if (xmlHttp) {
                 if (xmlHttp.status == 200) {
                     outstatus.style.color = "lime";
-                    increaseFontSize(outstatus, 5);}
+                    increaseFontSize(outstatus, 17);}
                 status = xmlHttp.status;
                 statustext = xmlHttp.statusText;
                 maintext = xmlHttp.response;
@@ -394,11 +394,11 @@
 
         //#region miscellaneous
 
-        function increaseFontSize(element, incr) {
-            let compStyles = window.getComputedStyle(element);
-            let fontSize = parseInt(compStyles.getPropertyValue('font-size'));
-            let newFontSize = fontSize + incr;
-            element.style.fontSize = newFontSize + 'px' ;
+        function increaseFontSize(element, newsize) {
+            // let compStyles = window.getComputedStyle(element);
+            // let fontSize = parseInt(compStyles.getPropertyValue('font-size'));
+            // let newsize = fontSize + incr;
+            element.style.fontSize = newsize + 'px' ;
         }
 
         //#endregion
